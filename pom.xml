@@ -77,8 +77,7 @@
                     <manifest>
                         <entry>
                             <key>Java-Agents</key>
-                            <value>quasar-core-0.7.6-jdk8.jar=m</value>
-                            <!--jacocoagent-sc-version.jar=output=tcpserver,port=18080,address=127.0.0.1,append=false-->
+                            <value>quasar-core-0.7.6-jdk8.jar=m jacocoagent-sc-version.jar=output=tcpserver,port=18080,address=127.0.0.1,append=false</value>
                         </entry>
                     </manifest>
 
