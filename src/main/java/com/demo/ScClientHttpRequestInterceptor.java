@@ -34,10 +34,6 @@ public class ScClientHttpRequestInterceptor implements ClientHttpRequestIntercep
         } catch (IOException e) {
             ioException = e;
         } catch (Exception e) {
-            /**
-             * 如果不加 jacoco 这里不会发生异常.//If you do not add jacoco there will be no exception.
-             * 加了 jacoco 导致发生异常而出错//Added jacoco led to exception and mistakes
-             */
             ioException = new IOException("wrapped IOException", e);
         }
 
