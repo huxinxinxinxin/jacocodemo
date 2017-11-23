@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="SCS_LOG_PATH" value="log/"/>
+        <Property name="SCS_LOG_FILE" value="demo"/>
+        <!--需要约定的常量，请勿随意变更-->
+        <Property name="product">xx_tools</Property>
+        <Property name="log-pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{scId}] [%X{userId}] [%t] [%-5level] %c{1.}@%M:%L - %m%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>${log-pattern}</Pattern>
+            </PatternLayout>
+        </Console>
+        <RollingFile name="FILE-MAIN" fileName="${SCS_LOG_PATH}${SCS_LOG_FILE}.log"
+                     filePattern="${SCS_LOG_PATH}%d{yyyy-ww}/${SCS_LOG_FILE}.%d{yyyy-MM-dd}.%i.log.zip">
+            <PatternLayout>
+                <Pattern>${log-pattern}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <CronTriggeringPolicy schedule="0 0 0 * * ?"/>
+                <SizeBasedTriggeringPolicy size="40 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="100">
+                <Delete basePath="${SCS_LOG_PATH}" maxDepth="2">
+                    <IfFileName glob="*/*.log.zip">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="3 GB"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <!--记录integration发请求日志信息-->
+        <RollingFile name="FILE-INTEGRATION" fileName="${SCS_LOG_PATH}${SCS_LOG_FILE}.integration.log"
+                     filePattern="${SCS_LOG_PATH}%d{yyyy-ww}/${SCS_LOG_FILE}.integration.%d{yyyy-MM-dd}.%i.log.zip">
+            <PatternLayout>
+                <Pattern>${log-pattern}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <CronTriggeringPolicy schedule="0 0 0 * * ?"/>
+                <SizeBasedTriggeringPolicy size="40 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${SCS_LOG_PATH}" maxDepth="2">
+                    <IfFileName glob="*/*.log.zip">
+                        <IfLastModified age="30d">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="3 GB"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <Logger name="com.demo" level="DEBUG"/>
+
+        <Root level="INFO">
+            <AppenderRef ref="FILE-MAIN"/>
+            <AppenderRef ref="STDOUT"/>
+            <!--<AppenderRef ref="eventLogger"/>-->
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,21 @@
+log/
+**/log/**
+**/log
+target
+**/target/**
+**/target
+.settings
+.classpath
+.project
+**/.settings
+**/.classpath
+**/.project
+.idea/
+**/*.iml
+*.pid
+*.log
+*.DS_Store
+nohup.out
+startup.json
+将删除 tools-view/src/
+将删除 img/
