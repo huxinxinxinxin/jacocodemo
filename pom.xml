@@ -52,6 +52,11 @@
             <artifactId>comsat-httpclient</artifactId>
             <version>0.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.jacocoagent</groupId>
+            <artifactId>jacocoagent</artifactId>
+            <version>sc-version</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>demo</finalName>
