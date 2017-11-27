@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -28,28 +29,23 @@ public class DemoController {
     private RestTemplate restTemplate;
 
     @GetMapping
-    public ResponseEntity<Object> demo() {
+    public ResponseEntity<Object> demo() throws SuspendExecution, InterruptedException {
         Object ob = getData();
         return new ResponseEntity<>(ob, HttpStatus.OK);
     }
 
-    private Object getData() {
-        Channel<Object> outChannel = Channels.newChannel(0);
+    private Optional<Object> getData() throws InterruptedException, SuspendExecution {
+        Channel<Optional<Object>> outChannel = Channels.newChannel(0);
         new Fiber<Void>((SuspendableRunnable) () -> {
             try {
                 Object result = restTemplate.getForEntity("http://139.196.171.215:6060/?key=中国", Map.class).getBody();
-                outChannel.send(result);
+                outChannel.send(Optional.ofNullable(result));
             } catch (Exception e) {
                 LOGGER.error("", e);
             } finally {
                 outChannel.close();
             }
         }).inheritThreadLocals().start();
-        try {
-            return outChannel.receive(5, TimeUnit.SECONDS);
-        } catch (SuspendExecution | InterruptedException suspendExecution) {
-            suspendExecution.printStackTrace();
-        }
-        return null;
+        return outChannel.receive(5, TimeUnit.SECONDS);
     }
 }
