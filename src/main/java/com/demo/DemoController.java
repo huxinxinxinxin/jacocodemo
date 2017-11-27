@@ -28,12 +28,12 @@ public class DemoController {
     private RestTemplate restTemplate;
 
     @GetMapping
-    public ResponseEntity<Object> demo() throws SuspendExecution, InterruptedException {
+    public ResponseEntity<Object> demo() {
         Object ob = getData();
         return new ResponseEntity<>(ob, HttpStatus.OK);
     }
 
-    private Object getData() throws InterruptedException, SuspendExecution {
+    private Object getData() {
         Channel<Object> outChannel = Channels.newChannel(0);
         new Fiber<Void>((SuspendableRunnable) () -> {
             try {
@@ -45,6 +45,11 @@ public class DemoController {
                 outChannel.close();
             }
         }).inheritThreadLocals().start();
-        return outChannel.receive(5, TimeUnit.SECONDS);
+        try {
+            return outChannel.receive(5, TimeUnit.SECONDS);
+        } catch (SuspendExecution | InterruptedException suspendExecution) {
+            suspendExecution.printStackTrace();
+        }
+        return null;
     }
 }

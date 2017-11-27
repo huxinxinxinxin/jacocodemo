@@ -39,7 +39,7 @@
         <dependency>
             <groupId>co.paralleluniverse</groupId>
             <artifactId>quasar-core</artifactId>
-            <version>0.7.6</version>
+            <version>0.7.9</version>
             <classifier>jdk8</classifier>
         </dependency>
         <dependency>
@@ -53,9 +53,10 @@
             <version>0.7.0</version>
         </dependency>
         <dependency>
-            <groupId>org.jacocoagent</groupId>
-            <artifactId>jacocoagent</artifactId>
-            <version>sc-version</version>
+            <groupId>org.jacoco</groupId>
+            <artifactId>org.jacoco.agent</artifactId>
+            <classifier>runtime</classifier>
+            <version>0.7.9</version>
         </dependency>
     </dependencies>
     <build>
@@ -66,7 +67,7 @@
                 <artifactId>capsule-maven-plugin</artifactId>
                 <version>1.3.0</version>
                 <configuration>
-                    <appClass>com.social.credits.Application</appClass>
+                    <appClass>com.demo.Application</appClass>
                     <type>fat</type>
 
                     <execPluginConfig>root</execPluginConfig>
@@ -76,13 +77,18 @@
                         <property>
                             <key>propertyName1</key>
                             <value>propertyValue1</value>
+                            <key>co.paralleluniverse.fibers.verifyInstrumentation</key>
+                            <value>true</value>
+                            <key>co.paralleluniverse.fibers.detectRunawayFibers</key>
+                            <value>false</value>
+
                         </property>
                     </properties>
 
                     <manifest>
                         <entry>
                             <key>Java-Agents</key>
-                            <value>quasar-core-0.7.6-jdk8.jar=m jacocoagent-sc-version.jar=output=tcpserver,port=18080,address=127.0.0.1,append=false</value>
+                            <value>quasar-core-0.7.9-jdk8.jar=m org.jacoco.agent-0.7.9-runtime.jar=output=tcpserver,port=18080,address=127.0.0.1,append=false</value>
                         </entry>
                     </manifest>
 
